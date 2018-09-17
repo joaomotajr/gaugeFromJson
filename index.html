@@ -1,0 +1,46 @@
+<html ng-app='eneeyes-node-site'>
+	
+    <head>
+        <title>MWM Devices</title>
+
+        <link rel="icon" href="image/favicon.ico" type="image/gif" sizes="16x16">
+
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+          		
+        <!-- ANGULAR -->        
+        <script type="text/javascript" src="./vendors/angular.min.js"></script>                
+        <script type="text/javascript" src="./fusioncharts/fusioncharts.js"></script>
+	    <script type="text/javascript" src="./fusioncharts/angular-fusioncharts.min.js"></script>
+	    <script type="text/javascript" src="./fusioncharts/themes/fusioncharts.theme.ocean.js"></script>
+
+        <script>
+            var app = angular.module('eneeyes-node-site',  ['ng-fusioncharts']);
+        </script>
+
+        <script src="site-controller.js"></script>
+        
+		
+    </head>
+
+    <body>
+        <div ng-controller='siteController'>	
+
+            <div data-ng-repeat="item in content">
+                
+                <div class="col-lg-2" style="padding-left: 5px; padding-right: 5px;">
+                    <div style=" width: 100%; display: flex; justify-content: center; text-align: center;">																																						
+                        <div data-fusioncharts							
+                            width="280"
+                            height= "180"						    						    						    						    
+                            type="angulargauge"      
+                            data-theme= "ocean"                          
+                            data-datasource="{{item.dataSource}}">
+                        </div>
+                    </div>                
+                </div>
+                
+            </div>
+			
+        </div>		
+    </body>
+</html>
