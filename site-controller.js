@@ -1,5 +1,16 @@
 app.controller('siteController', function($scope, $http) {
 	
+	// processsando = false;
+	// processingTimer: any;
+	  
+	// this.processingTimer = setInterval(() => { this.processing(); }, 5000);
+
+	// processing() {
+	// 	this.processsando = false;
+	// 	this._toastr.info('Sua solicitação foi enviada ao Servidor!', 'Info');
+	// 	clearInterval(this.processingTimer);
+	// }
+
 	function getDevicesInfo() {
 		$http.get("/targetdeviceStatus.json")
     		.then(function(response) {
