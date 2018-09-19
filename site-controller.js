@@ -1,18 +1,14 @@
-app.controller('siteController', function($scope, $http) {
-	
-	// processsando = false;
-	// processingTimer: any;
-	  
-	// this.processingTimer = setInterval(() => { this.processing(); }, 5000);
 
-	// processing() {
-	// 	this.processsando = false;
-	// 	this._toastr.info('Sua solicitação foi enviada ao Servidor!', 'Info');
-	// 	clearInterval(this.processingTimer);
-	// }
+
+app.controller('siteController', function($scope, $http, $cacheFactory) {
+	
+	$scope.cacheObject = $cacheFactory("newCacheInstance");
+	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 5000);
 
 	function getDevicesInfo() {
-		$http.get("/targetdeviceStatus.json")
+		var param = new Date();
+
+		$http.get('/targetdeviceStatus.json?_cache_buster=' + param.getTime())
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -21,11 +17,36 @@ app.controller('siteController', function($scope, $http) {
 						e.dataSource = getGaugeInfo(e);																	
 					}			
 				);
-
 			}, function(response) {
-				//Second function handles error
 				$scope.content = "Something went wrong";
 			});
+	}
+
+	function getDevicesUpdate() {
+		var param = new Date();
+
+		$http({
+				method: 'GET',
+				cache: false,
+				url: '/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
+				headers: { 'Content-Type': 'application/json' }
+			}).then(function successCallback(response) {
+				var contendUpdated = response.data;
+
+				for (var i = 0; i < contendUpdated.length; i++) {
+					var sensorUpdatedId = contendUpdated[i].id;
+					
+					var value = $scope.content.filter(function (obj) {
+						return obj.id === sensorUpdatedId;
+					})[0].value;
+					
+					$scope.content[i].value = value;
+				}
+			}, function errorCallback(response) {
+			  alert("Falha::" + response)
+		});
+
+		$scope.cacheObject.RemoveAll; 
 	}
 
 	function getGaugeInfo(e) {
@@ -33,10 +54,10 @@ app.controller('siteController', function($scope, $http) {
 		properties =  {
 			caption: e.nome + " - ID " + e.id,
 			captionpadding: "30",
-		  	 origw: "320",
-			 origh: "300",
-			gaugeouterradius: "115",
-			gaugestartangle: "270",
+		  	 origw: "280",
+			 origh: "280",
+			gaugeouterradius: "90",
+			gaugestartangle: "220",
 			gaugeendangle: "-25",
 			showvalue: "1",
 			valuefontsize: "20",
@@ -55,8 +76,7 @@ app.controller('siteController', function($scope, $http) {
 			{
 				minvalue: 0, //e.rangeMin,
 				maxvalue: 110,
-				code: "#D8D8D8" // "##6baa01",
-				
+				code: "#D8D8D8" // "##6baa01",				
 			 },
 			 {
 			 	minValue: 110,

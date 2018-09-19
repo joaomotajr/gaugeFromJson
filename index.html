@@ -1,3 +1,5 @@
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
 <html ng-app='eneeyes-node-site'>
 	
     <head>
@@ -23,21 +25,26 @@
     </head>
 
     <body>
-        <div ng-controller='siteController'>	
-
-            <div data-ng-repeat="item in content">
-                
-                <div class="col-lg-2" style="padding-left: 5px; padding-right: 5px;">
-                    <div style=" width: 100%; display: flex; justify-content: center; text-align: center;">																																						
-                        <div data-fusioncharts							
-                            width="280"
-                            height= "180"						    						    						    						    
-                            type="angulargauge"      
-                            data-theme= "ocean"                          
-                            data-datasource="{{item.dataSource}}">
+        <div ng-controller='siteController'>
+            <div class="row col-md-12" style="margin-right: 5px !important; margin-left: 5px !important;">
+                    <br>
+                    
+                    <h4> MWM Sensores Status </h4>
+                    
+                    <div data-ng-repeat="item in content">               
+                        <div class="col-xs-6 col-sm-4 col-md-3" style="padding-left: 15px; padding-right: 15px;">
+                            <div style="width: 100%; display: flex; justify-content: center; text-align: center;">																																						
+                                <div data-fusioncharts							
+                                    width="260"
+                                    height= "260"					    						    						    						    
+                                    type="angulargauge"      
+                                    data-theme= "ocean"                          
+                                    data-datasource="{{item.dataSource}}">
+                                </div>
+                            </div>                
                         </div>
-                    </div>                
-                </div>
+                    
+                    </div>
                 
             </div>
 			
