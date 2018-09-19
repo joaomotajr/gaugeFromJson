@@ -1,14 +1,10 @@
-
-
-app.controller('siteController', function($scope, $http, $cacheFactory) {
-	
-	$scope.cacheObject = $cacheFactory("newCacheInstance");
-	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 5000);
+app.controller('siteController', function($scope, $http) {
+		
+	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 3000);
 
 	function getDevicesInfo() {
-		var param = new Date();
-
-		$http.get('/targetdeviceStatus.json?_cache_buster=' + param.getTime())
+		
+		$http.get('/targetdeviceStatus.json')
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -18,8 +14,8 @@ app.controller('siteController', function($scope, $http, $cacheFactory) {
 					}			
 				);
 			}, function(response) {
-				$scope.content = "Something went wrong";
-			});
+				alert("Ops, Algo Aconteceu::" + response);
+		});
 	}
 
 	function getDevicesUpdate() {
@@ -29,24 +25,20 @@ app.controller('siteController', function($scope, $http, $cacheFactory) {
 				method: 'GET',
 				cache: false,
 				url: '/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
-				headers: { 'Content-Type': 'application/json' }
+				headers: { 'Content-Type': 'application/json'}
 			}).then(function successCallback(response) {
 				var contendUpdated = response.data;
 
 				for (var i = 0; i < contendUpdated.length; i++) {
 					var sensorUpdatedId = contendUpdated[i].id;
 					
-					var value = $scope.content.filter(function (obj) {
+					$scope.content.filter(function (obj) {
 						return obj.id === sensorUpdatedId;
-					})[0].value;
-					
-					$scope.content[i].value = value;
+					})[0].dataSource.dials.dial[0].value = contendUpdated[i].value / 100000;										
 				}
 			}, function errorCallback(response) {
-			  alert("Falha::" + response)
-		});
-
-		$scope.cacheObject.RemoveAll; 
+				alert("Ops, Algo Aconteceu::" + response);
+			});		
 	}
 
 	function getGaugeInfo(e) {
