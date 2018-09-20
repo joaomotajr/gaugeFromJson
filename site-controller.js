@@ -4,7 +4,7 @@ app.controller('siteController', function($scope, $http) {
 
 	function getDevicesInfo() {
 		
-		$http.get('/targetdeviceStatus.json')
+		$http.get('/db/targetdeviceStatus.json')
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -24,7 +24,7 @@ app.controller('siteController', function($scope, $http) {
 		$http({
 				method: 'GET',
 				cache: false,
-				url: '/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
+				url: '/db/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
 				headers: { 'Content-Type': 'application/json'}
 			}).then(function successCallback(response) {
 				var contendUpdated = response.data;
@@ -52,14 +52,14 @@ app.controller('siteController', function($scope, $http) {
 			gaugestartangle: "220",
 			gaugeendangle: "-25",
 			showvalue: "1",
-			valuefontsize: "20",
+			valuefontsize: "14",
 			majortmnumber: "13",
 			majortmthickness: "2",
 			majortmheight: "13",
 			minortmheight: "7",
 			minortmthickness: "1",
 			minortmnumber: "1",
-			showgaugeborder: "0",
+			showgaugeborder: "1",
 			theme: "ocean"
 		};
 
