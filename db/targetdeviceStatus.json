@@ -1,0 +1,1 @@
+[{"tipo":"O","minValue":20,"maxValue":2000,"nome":"SENSOR 02","unidade":"PPM","id":117,"value":976,"key":"E_GAS"},{"tipo":"NO2","minValue":0.0,"maxValue":100.0,"nome":"SENSOR 01","unidade":"LEL%","id":116,"value":473632,"key":"E_GAS"}]

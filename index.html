@@ -24,27 +24,35 @@
 
     <body>
         <div ng-controller='siteController'>
-            <div class="row col-md-12" style="margin-right: 5px !important; margin-left: 5px !important;">
-                    <br>                    
-                    <h4> MWM Sensores Status </h4>
-                    <hr>
-                    <div data-ng-repeat="item in content">               
-                        <div class="col-xs-6 col-sm-4 col-md-3" style="padding-left: 15px; padding-right: 15px;">
-                            <div style="width: 100%; display: flex; justify-content: center; text-align: center;">																																						
-                                <div data-fusioncharts							
-                                    width="260"
-                                    height= "260"					    						    						    						    
-                                    type="angulargauge"      
-                                    data-theme= "ocean"                          
-                                    data-datasource="{{item.dataSource}}">
-                                </div>
-                            </div>                
-                        </div>
-                    
-                    </div>
-                
+            <div class="row col-md-12">
+                <div class="col-xs-5 col-md-5" style="padding: 5px;">
+                    <h4>E-Gas - Standalone Mode</h4>
+                </div>
+                <div class="col-xs-4 col-md-4" style="padding: 5px;">
+                    <h4>MWM Sensores</h4>
+                </div>
+                <div class="col-xs-3 col-md-3">                        
+                    <img src="image/Logo_e-GAS.PNG" style="float: right; margin-right: 20px; margin-TOP: 5px; width: 41%;" class="ng-scope">                       
+                </div>
             </div>
-			
+            <div class="row col-md-12">                                        
+                <hr style="margin-top: 8px !important; margin-bottom: 8px !important;">
+                <div data-ng-repeat="item in content">               
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding-left: 15px; padding-right: 15px;">
+                        <div style="width: 100%; display: flex; justify-content: center; text-align: center;">																																						
+                            <!-- <label class="pull-left" style="font-size: 8px">{{item.dataSource.dataText}}</label> -->
+                            <br>
+                            <div data-fusioncharts							
+                                width="200"
+                                height= "240"					    						    						    						    
+                                type="angulargauge"      
+                                data-theme= "ocean"                          
+                                data-datasource="{{item.dataSource}}">
+                            </div>
+                        </div>                
+                    </div>                    
+                </div>                
+            </div>			
         </div>		
     </body>
 </html>

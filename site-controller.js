@@ -2,9 +2,37 @@ app.controller('siteController', function($scope, $http) {
 		
 	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 3000);
 
+	function timeSince(dateIn, date) {
+
+	    var seconds = Math.floor((new Date(dateIn) - date) / 1000);
+
+	    var interval = Math.floor(seconds / 31536000);
+
+	    if (interval > 1) {
+	        return interval + " anos";
+	    }
+	    interval = Math.floor(seconds / 2592000);
+	    if (interval > 1) {
+	        return interval + " meses";
+	    }
+	    interval = Math.floor(seconds / 86400);
+	    if (interval > 1) {
+	        return interval + " dias";
+	    }
+	    interval = Math.floor(seconds / 3600);
+	    if (interval > 1) {
+	        return interval + " hrs";
+	    }
+	    interval = Math.floor(seconds / 60);
+	    if (interval > 1) {
+	        return interval + " mins";
+	    }
+	    return Math.floor(seconds) + " segs";
+	}
+
 	function getDevicesInfo() {
 		
-		$http.get('/targetdeviceStatus.json')
+		$http.get('/db/targetdeviceStatus.json')
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -24,7 +52,7 @@ app.controller('siteController', function($scope, $http) {
 		$http({
 				method: 'GET',
 				cache: false,
-				url: '/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
+				url: '/db/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
 				headers: { 'Content-Type': 'application/json'}
 			}).then(function successCallback(response) {
 				var contendUpdated = response.data;
@@ -32,9 +60,13 @@ app.controller('siteController', function($scope, $http) {
 				for (var i = 0; i < contendUpdated.length; i++) {
 					var sensorUpdatedId = contendUpdated[i].id;
 					
-					$scope.content.filter(function (obj) {
+					var item = $scope.content.filter(function (obj) {
 						return obj.id === sensorUpdatedId;
-					})[0].dataSource.dials.dial[0].value = contendUpdated[i].value / 100000;										
+					})[0];
+
+					var data = new Date();
+					item.dataSource.dataText = timeSince(data, item.dataSource.data);
+					item.dataSource.dials.dial[0].value = contendUpdated[i].value / 100000
 				}
 			}, function errorCallback(response) {
 				alert("Ops, Algo Aconteceu::" + response);
@@ -45,45 +77,39 @@ app.controller('siteController', function($scope, $http) {
 
 		properties =  {
 			caption: e.nome + " - ID " + e.id,
-			captionpadding: "30",
-		  	 origw: "280",
+			subcaption: "Gás: " + e.tipo,
+			captionontop: 0,			
+			captionpadding: 30,
+		  	 origw: "300",
 			 origh: "280",
 			gaugeouterradius: "90",
-			gaugestartangle: "220",
+			gaugestartangle: "270",
 			gaugeendangle: "-25",
 			showvalue: "1",
-			valuefontsize: "20",
+			valuefontsize: "14",
 			majortmnumber: "13",
 			majortmthickness: "2",
 			majortmheight: "13",
 			minortmheight: "7",
 			minortmthickness: "1",
 			minortmnumber: "1",
-			showgaugeborder: "0",
+			showgaugeborder: "1",
 			theme: "ocean"
 		};
+
+		var rangeGray = (e.maxValue - e.minValue) / 10 ;
 
 		colors = {				
 			color: [
 			{
-				minvalue: 0, //e.rangeMin,
-				maxvalue: 110,
-				code: "#D8D8D8" // "##6baa01",				
+				minvalue: e.minValue,
+				maxvalue: rangeGray,
+				code: "#D8D8D8"
 			 },
 			 {
-			 	minValue: 110,
-			 	maxValue: 280,
-			 	code: "#F6F6F6"			 	
-			// }, {
-			// 	minValue: yellow,
-			// 	maxValue: red,
-			// 	code: "#f8bd19",
-			// 	label: (e.artefact == "TIME" ? "Aberta" : "")
-			// }, {
-			// 	minValue: red,
-			// 	maxValue: e.rangeMax,
-			// 	code: "#e44a00",
-			// 	label: (e.artefact == "TIME" ? "Aberta" : "")
+			 	minValue: rangeGray,
+			 	maxValue: e.maxValue,
+			 	code: "#F6F6F6"			
 			}]		
 		};
 		
@@ -94,16 +120,39 @@ app.controller('siteController', function($scope, $http) {
 				basewidth: "8"			
 			}]			
 		};
+
+		
+		annotations = {
+			groups: [
+			  {
+				items: [
+				  {	
+					type: "text",
+					id: "text",  				
+					text: e.unidade,
+					x: "$gaugeCenterX + 40",
+            		y: "$gaugeCenterY + 60",				
+					fontsize: "10",
+					color: "#6957da"
+				  }
+				]
+			  }
+			]
+		};
 		
 		dataSource = {
 			chart: null,
 			colorRange: null,
-			dials: null
+			dials: null,
+			annotations: null
 		};
 		
 		dataSource.chart = properties;
 		dataSource.colorRange = colors;
-		dataSource.dials = values;		
+		dataSource.dials = values;
+		dataSource.annotations = annotations;
+		dataSource.data = new Date();
+		dataSource.dataText = "Agora";		
 		
 		return dataSource;
 	}
