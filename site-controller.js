@@ -4,7 +4,7 @@ app.controller('siteController', function($scope, $http) {
 
 	function getDevicesInfo() {
 		
-		$http.get('/targetdeviceStatus.json')
+		$http.get('/db/targetdeviceStatus.json')
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -24,7 +24,7 @@ app.controller('siteController', function($scope, $http) {
 		$http({
 				method: 'GET',
 				cache: false,
-				url: '/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
+				url: '/db/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
 				headers: { 'Content-Type': 'application/json'}
 			}).then(function successCallback(response) {
 				var contendUpdated = response.data;
@@ -45,45 +45,39 @@ app.controller('siteController', function($scope, $http) {
 
 		properties =  {
 			caption: e.nome + " - ID " + e.id,
-			captionpadding: "30",
-		  	 origw: "280",
+			subcaption: "Gás: " + e.tipo,
+			captionontop: 0,			
+			captionpadding: 30,
+		  	 origw: "300",
 			 origh: "280",
 			gaugeouterradius: "90",
-			gaugestartangle: "220",
+			gaugestartangle: "270",
 			gaugeendangle: "-25",
 			showvalue: "1",
-			valuefontsize: "20",
+			valuefontsize: "14",
 			majortmnumber: "13",
 			majortmthickness: "2",
 			majortmheight: "13",
 			minortmheight: "7",
 			minortmthickness: "1",
 			minortmnumber: "1",
-			showgaugeborder: "0",
+			showgaugeborder: "1",
 			theme: "ocean"
 		};
+
+		var rangeGray = (e.maxValue - e.minValue) / 10 ;
 
 		colors = {				
 			color: [
 			{
-				minvalue: 0, //e.rangeMin,
-				maxvalue: 110,
-				code: "#D8D8D8" // "##6baa01",				
+				minvalue: e.minValue,
+				maxvalue: rangeGray,
+				code: "#D8D8D8"
 			 },
 			 {
-			 	minValue: 110,
-			 	maxValue: 280,
-			 	code: "#F6F6F6"			 	
-			// }, {
-			// 	minValue: yellow,
-			// 	maxValue: red,
-			// 	code: "#f8bd19",
-			// 	label: (e.artefact == "TIME" ? "Aberta" : "")
-			// }, {
-			// 	minValue: red,
-			// 	maxValue: e.rangeMax,
-			// 	code: "#e44a00",
-			// 	label: (e.artefact == "TIME" ? "Aberta" : "")
+			 	minValue: rangeGray,
+			 	maxValue: e.maxValue,
+			 	code: "#F6F6F6"			
 			}]		
 		};
 		
@@ -94,16 +88,37 @@ app.controller('siteController', function($scope, $http) {
 				basewidth: "8"			
 			}]			
 		};
+
+		
+		annotations = {
+			groups: [
+			  {
+				items: [
+				  {	
+					type: "text",
+					id: "text",  				
+					text: e.unidade,
+					x: "$gaugeCenterX + 40",
+            		y: "$gaugeCenterY + 60",				
+					fontsize: "10",
+					color: "#6957da"
+				  }
+				]
+			  }
+			]
+		};
 		
 		dataSource = {
 			chart: null,
 			colorRange: null,
-			dials: null
+			dials: null,
+			annotations: null
 		};
 		
 		dataSource.chart = properties;
 		dataSource.colorRange = colors;
-		dataSource.dials = values;		
+		dataSource.dials = values;
+		dataSource.annotations = annotations;		
 		
 		return dataSource;
 	}
