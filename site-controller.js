@@ -1,6 +1,7 @@
 app.controller('siteController', function($scope, $http) {
 		
 	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 3000);
+	this.processingTimer = setInterval(() => { checkDevicesStatus(); }, 4000);
 
 	function timeSince(dateIn, date) {
 
@@ -46,6 +47,16 @@ app.controller('siteController', function($scope, $http) {
 		});
 	}
 
+	function checkDevicesStatus() {
+		if($scope.content == undefined) return;
+
+		$scope.content.forEach(function(item) {				
+			console.log(new Date() + " / " + item.dataSource.data);
+			item.dataSource.chart.subcaption = timeSince(new Date(), item.dataSource.data);
+		});
+		
+	}
+
 	function getDevicesUpdate() {
 		var param = new Date();
 
@@ -63,37 +74,49 @@ app.controller('siteController', function($scope, $http) {
 					var item = $scope.content.filter(function (obj) {
 						return obj.id === sensorUpdatedId;
 					})[0];
-					
-					//Tirar o calculo daqui, atualizar campo data + millisegs e fazer função atualização separada
-					// para contemplar os dispositivos offline
-					if (item.dataSource.milliTime != contendUpdated[i].milliTime) {
-						console.log("time=" + item.dataSource.milliTime);
-						console.log("time=" + contendUpdated[i].milliTime);
+
+					if(contendUpdated[i].milliTime != undefined && parseFloat(item.dataSource.milliTime) > 0) {
+						var dif =  parseFloat(contendUpdated[i].milliTime) - parseFloat(item.dataSource.milliTime);						
 						
-						currentMilliTime = contendUpdated[i].milliTime;
-
-						if(currentMilliTime != undefined && parseFloat(item.dataSource.milliTime) > 0) {
-							var dif =  parseFloat(currentMilliTime) - parseFloat(item.dataSource.milliTime);
-							
-							if(dif>1000) {
-								console.log(dif);
-								var t = new Date();
-								t.setSeconds(t.getSeconds() + (dif / 1000));
-
-								item.dataSource.chart.subcaption = timeSince(t, new Date());
-								item.dataSource.milliTime = contendUpdated[i].milliTime;
-							}
-							else {
-								alert("oi");
-							}
-						}
+						if (dif > 0) {				
+							var d = new Date();
+							item.dataSource.data = d.setSeconds(d.getSeconds() + (dif / 1000));
+							item.dataSource.milliTime = contendUpdated[i].milliTime;						
+						}			
+					}
+					else {
+						item.dataSource.data = new Date(0);
+						$scope.msgError = "Dispositivo com Data inválida :: F5 - LImpar ";
 					}
 					
+					// calcDelayTime(item.dataSource.data, item.dataSource.milliTime, contendUpdated[i].milliTime);
 					item.dataSource.dials.dial[0].value = contendUpdated[i].value / 100000;
 				}
 			}, function errorCallback(response) {
 				$scope.msgError = "Ops, Algo Aconteceu::" + response;
 			});		
+	}
+
+	function calcDelayTime(data, milliTime, updateMilliTime) {
+		
+		console.log("time=" + milliTime + " - updatedTime=" + updateMilliTime);
+		
+		currentMilliTime = updateMilliTime;
+
+		if(currentMilliTime != undefined && parseFloat(milliTime) > 0) {
+			var dif =  parseFloat(currentMilliTime) - parseFloat(milliTime);						
+			
+			if (dif > 0) {				
+				d = new Date();
+				data = d.setSeconds(d.getSeconds() + (dif / 1000));
+				milliTime = updateMilliTime;
+			}			
+		}
+		else {
+			data = new Date(0);
+			$scope.msgError = "Dispositivo com Data inválida :: F5 - LImpar ";
+		}
+
 	}
 
 	function getGaugeInfo(e) {
@@ -177,8 +200,7 @@ app.controller('siteController', function($scope, $http) {
 		dataSource.annotations = annotations;
 
 		dataSource.milliTime = e.milliTime;
-		dataSource.data = new Date();				
-				
+		dataSource.data = new Date();
 		
 		return dataSource;
 	}
