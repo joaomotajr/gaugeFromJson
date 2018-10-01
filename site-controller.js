@@ -32,7 +32,7 @@ app.controller('siteController', function($scope, $http) {
 
 	function getDevicesInfo() {
 		
-		$http.get('/db/targetdeviceStatus.json')
+		$http.get('/sistema/db/targetdeviceStatus.json')
     		.then(function(response) {
 				$scope.content = response.data;
 				
@@ -42,7 +42,7 @@ app.controller('siteController', function($scope, $http) {
 					}			
 				);
 			}, function(response) {
-				alert("Ops, Algo Aconteceu::" + response);
+				$scope.msgError = "Ops, Algo Aconteceu::" + response;
 		});
 	}
 
@@ -52,7 +52,7 @@ app.controller('siteController', function($scope, $http) {
 		$http({
 				method: 'GET',
 				cache: false,
-				url: '/db/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
+				url: '/sistema/db/targetdeviceStatus.json?_cache_buster=' + param.getTime(),
 				headers: { 'Content-Type': 'application/json'}
 			}).then(function successCallback(response) {
 				var contendUpdated = response.data;
@@ -63,21 +63,45 @@ app.controller('siteController', function($scope, $http) {
 					var item = $scope.content.filter(function (obj) {
 						return obj.id === sensorUpdatedId;
 					})[0];
+					
+					//Tirar o calculo daqui, atualizar campo data + millisegs e fazer função atualização separada
+					// para contemplar os dispositivos offline
+					if (item.dataSource.milliTime != contendUpdated[i].milliTime) {
+						console.log("time=" + item.dataSource.milliTime);
+						console.log("time=" + contendUpdated[i].milliTime);
+						
+						currentMilliTime = contendUpdated[i].milliTime;
 
-					var data = new Date();
-					item.dataSource.dataText = timeSince(data, item.dataSource.data);
-					item.dataSource.dials.dial[0].value = contendUpdated[i].value / 100000
+						if(currentMilliTime != undefined && parseFloat(item.dataSource.milliTime) > 0) {
+							var dif =  parseFloat(currentMilliTime) - parseFloat(item.dataSource.milliTime);
+							
+							if(dif>1000) {
+								console.log(dif);
+								var t = new Date();
+								t.setSeconds(t.getSeconds() + (dif / 1000));
+
+								item.dataSource.chart.subcaption = timeSince(t, new Date());
+								item.dataSource.milliTime = contendUpdated[i].milliTime;
+							}
+							else {
+								alert("oi");
+							}
+						}
+					}
+					
+					item.dataSource.dials.dial[0].value = contendUpdated[i].value / 100000;
 				}
 			}, function errorCallback(response) {
-				alert("Ops, Algo Aconteceu::" + response);
+				$scope.msgError = "Ops, Algo Aconteceu::" + response;
 			});		
 	}
 
 	function getGaugeInfo(e) {
 
 		properties =  {
-			caption: e.nome + " - ID " + e.id,
-			subcaption: "Gás: " + e.tipo,
+			caption: e.nome + " - ID " + e.id + " [" + e.tipo + "]",
+			// subcaption: "Gás: " + e.tipo,
+			subcaption: "Agora",
 			captionontop: 0,			
 			captionpadding: 30,
 		  	 origw: "300",
@@ -151,8 +175,10 @@ app.controller('siteController', function($scope, $http) {
 		dataSource.colorRange = colors;
 		dataSource.dials = values;
 		dataSource.annotations = annotations;
-		dataSource.data = new Date();
-		dataSource.dataText = "Agora";		
+
+		dataSource.milliTime = e.milliTime;
+		dataSource.data = new Date();				
+				
 		
 		return dataSource;
 	}
