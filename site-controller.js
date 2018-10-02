@@ -1,4 +1,6 @@
 app.controller('siteController', function($scope, $http) {
+
+	$scope.msgError = undefined;
 		
 	this.processingTimer = setInterval(() => { getDevicesUpdate(); }, 3000);
 	this.processingTimer = setInterval(() => { checkDevicesStatus(); }, 4000);
@@ -50,8 +52,7 @@ app.controller('siteController', function($scope, $http) {
 	function checkDevicesStatus() {
 		if($scope.content == undefined) return;
 
-		$scope.content.forEach(function(item) {				
-			console.log(new Date() + " / " + item.dataSource.data);
+		$scope.content.forEach(function(item) {
 			item.dataSource.chart.subcaption = timeSince(new Date(), item.dataSource.data);
 		});
 		
@@ -75,21 +76,11 @@ app.controller('siteController', function($scope, $http) {
 						return obj.id === sensorUpdatedId;
 					})[0];
 
-					if(contendUpdated[i].milliTime != undefined && parseFloat(item.dataSource.milliTime) > 0) {
-						var dif =  parseFloat(contendUpdated[i].milliTime) - parseFloat(item.dataSource.milliTime);						
-						
-						if (dif > 0) {				
-							var d = new Date();
-							item.dataSource.data = d.setSeconds(d.getSeconds() + (dif / 1000));
-							item.dataSource.milliTime = contendUpdated[i].milliTime;						
-						}			
-					}
-					else {
-						item.dataSource.data = new Date(0);
-						$scope.msgError = "Dispositivo com Data inválida :: F5 - LImpar ";
-					}
+					if(contendUpdated[i].milliTime != item.dataSource.milliTime) {											
+						item.dataSource.data = new Date();
+						item.dataSource.milliTime = contendUpdated[i].milliTime;									
+					}					
 					
-					// calcDelayTime(item.dataSource.data, item.dataSource.milliTime, contendUpdated[i].milliTime);
 					item.dataSource.dials.dial[0].value = contendUpdated[i].value / 100000;
 				}
 			}, function errorCallback(response) {
