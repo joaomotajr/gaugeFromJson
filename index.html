@@ -26,7 +26,8 @@
         <div ng-controller='siteController'>
             <div class="row col-md-12">
                 <div class="col-xs-5 col-md-5" style="padding: 5px;">
-                    <h4>E-Gas - Standalone Mode</h4><span data-bind="msgError"></span>
+                <h4>E-Gas - Standalone Mode</h4><span ng-show="msgError" class="text-red">Mensagem :: {{msgError}}</span>
+                <button ng-hide="msgError==undefined" class="btn btn-xs btn-info" ng-click="msgError=undefined">OK</button>
                 </div>
                 <div class="col-xs-4 col-md-4" style="padding: 5px;">
                     <h4>MWM Sensores</h4>
