@@ -41,14 +41,13 @@
                 <div data-ng-repeat="item in content">               
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding-left: 15px; padding-right: 15px;">
                         <div style="width: 100%; display: flex; justify-content: center; text-align: center;">																																						
-                            <!-- <label class="pull-left" style="font-size: 8px">{{item.dataSource.dataText}}</label> -->
-                            <br>
+                            <br>                            
                             <div data-fusioncharts							
                                 width="200"
                                 height= "240"					    						    						    						    
                                 type="angulargauge"      
                                 data-theme= "ocean"                          
-                                data-datasource="{{item.dataSource}}">
+                                data-datasource="{{item.dataSource}}">                            
                             </div>
                         </div>                
                     </div>                    

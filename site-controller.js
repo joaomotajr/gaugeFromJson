@@ -88,38 +88,15 @@ app.controller('siteController', function($scope, $http) {
 			});		
 	}
 
-	function calcDelayTime(data, milliTime, updateMilliTime) {
-		
-		console.log("time=" + milliTime + " - updatedTime=" + updateMilliTime);
-		
-		currentMilliTime = updateMilliTime;
-
-		if(currentMilliTime != undefined && parseFloat(milliTime) > 0) {
-			var dif =  parseFloat(currentMilliTime) - parseFloat(milliTime);						
-			
-			if (dif > 0) {				
-				d = new Date();
-				data = d.setSeconds(d.getSeconds() + (dif / 1000));
-				milliTime = updateMilliTime;
-			}			
-		}
-		else {
-			data = new Date(0);
-			$scope.msgError = "Dispositivo com Data inválida :: F5 - LImpar ";
-		}
-
-	}
-
 	function getGaugeInfo(e) {
-
+		var tipo = (e.tipo == null ? "Sem Config" : e.tipo);
 		properties =  {
-			caption: e.nome + " - ID " + e.id + " [" + e.tipo + "]",
-			// subcaption: "Gás: " + e.tipo,
+			caption: e.nome + " - ID " + e.id + " [" + tipo + "] " + e.detail,			
 			subcaption: "Agora",
 			captionontop: 0,			
 			captionpadding: 30,
-		  	 origw: "300",
-			 origh: "280",
+		  	origw: "300",
+			origh: "280",
 			gaugeouterradius: "90",
 			gaugestartangle: "270",
 			gaugeendangle: "-25",
@@ -135,20 +112,25 @@ app.controller('siteController', function($scope, $http) {
 			theme: "ocean"
 		};
 
-		var rangeGray = (e.maxValue - e.minValue) / 10 ;
-
+		// var rangeGray = (e.maxValue - e.minValue) / 10 ;
+		
 		colors = {				
 			color: [
 			{
 				minvalue: e.minValue,
-				maxvalue: rangeGray,
-				code: "#D8D8D8"
+				maxvalue: e.alarm1,
+				code: "#F6F6F6"
+				//code: "#D8D8D8"
 			 },
 			 {
-			 	minValue: rangeGray,
-			 	maxValue: e.maxValue,
-			 	code: "#F6F6F6"			
-			}]		
+			 	minValue: e.alarm1,
+			 	maxValue: e.alarm2,
+			 	code: "#ffc399" 			
+			},{
+				minValue: e.alarm2,
+				maxValue: e.maxValue,
+				code: "#f74d4d" 			
+		   }]		
 		};
 		
 		values = {		  		  			
@@ -192,6 +174,7 @@ app.controller('siteController', function($scope, $http) {
 
 		dataSource.milliTime = e.milliTime;
 		dataSource.data = new Date();
+		dataSource.detail = e.detail;
 		
 		return dataSource;
 	}
