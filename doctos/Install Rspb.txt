@@ -1,0 +1,79 @@
+XCTU  
+-----
+Modelo: XB24C 
+Function set: Digimesh 2.4 TH
+Firmware 9000
+
+Baud 9600
+data bits 8
+parity none
+Stop bits 2
+flow none
+
+Modelo: XB24C
+Function: ZIGBEE THReg
+Firmware: 4060  
+
+SSH
+----
+sudo service ssh start
+
+--Verificar
+sudo stat /proc/1/exe -c ' File: %N'
+
+--auto
+sudo systemctl enable ssh.service
+
+LCD
+-----
+
+--git
+sudo apt install git
+
+sudo rm -rf LCD-show
+git clone https://github.com/goodtft/LCD-show.git
+chmod -R 755 LCD-show
+cd LCD-show/
+
+--set
+sudo ./LCD7B-show
+
+Install Java 
+--------------------------
+sudo apt install default-jdk
+
+install serial
+--------------
+sudo apt-get install librxtx-java
+
+
+Identifying the RPi USB device used by the XBee
+---------------------------------------------------
+lsusb
+dmesg | grep Manufacturer
+dmesg | grep FTDI
+
+A better command might be (but I’m not sure it will work every time):
+---------------------------------------------------------------------
+dmesg | grep -i usb | grep -i tty
+
+
+install Arduino
+---------------
+sudo apt-get update && sudo apt-get install arduino arduino-core
+
+
+TeamViewer
+----------
+sudo apt-get install teamviewer-host
+sudo apt-get remove teamviewer-host
+
+--auto start
+sudo systemctl enable teamviewerd
+--change pass
+sudo teamviewer passwd cbr900rr
+--info
+teamviewer info
+
+--Keyboard
+sudo apt-get install matchbox-keyboard

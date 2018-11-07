@@ -25,12 +25,12 @@
     <body>
         <div ng-controller='siteController'>
             <div class="row col-md-12">
-                <div class="col-xs-5 col-md-5" style="padding: 5px;">
-                <h4>E-Gas - Standalone Mode</h4><span ng-show="msgError" class="text-red">Mensagem :: {{msgError}}</span>
+                <div class="col-xs-5 col-md-5" style="padding: 5px;">                
+                <h4><span style="cursor: pointer;" ng-click="fullScreen();">E-Gas</span> - Standalone Mode</h4><span ng-show="msgError" class="text-red">Mensagem :: {{msgError}}</span>
                 <button ng-hide="msgError==undefined" class="btn btn-xs btn-info" ng-click="msgError=undefined">OK</button>
                 </div>
                 <div class="col-xs-4 col-md-4" style="padding: 5px;">
-                    <h4>MWM Sensores</h4>
+                    <h4 style="cursor: pointer;" ng-click="refresh();">MWM Detectores</h4>
                 </div>
                 <div class="col-xs-3 col-md-3">                        
                     <img src="image/Logo_e-GAS.PNG" style="float: right; margin-right: 20px; margin-TOP: 5px; width: 41%;" class="ng-scope">                       
@@ -38,18 +38,19 @@
             </div>
             <div class="row col-md-12">                                        
                 <hr style="margin-top: 8px !important; margin-bottom: 8px !important;">
-                <div data-ng-repeat="item in content">               
+                <div data-ng-repeat="item in content | orderBy: 'nome'">               
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding-left: 15px; padding-right: 15px;">
-                        <div style="width: 100%; display: flex; justify-content: center; text-align: center;">																																						
-                            <br>                            
+                        <div style="width: 100%; display: flex; justify-content: center; text-align: center; ">																																						
+                            <br>
                             <div data-fusioncharts							
                                 width="200"
                                 height= "240"					    						    						    						    
                                 type="angulargauge"      
                                 data-theme= "ocean"                          
                                 data-datasource="{{item.dataSource}}">                            
-                            </div>
-                        </div>                
+                            </div>                            
+                        </div> 
+                        <br>                
                     </div>                    
                 </div>                
             </div>			

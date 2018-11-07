@@ -1,0 +1,172 @@
+[
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "Sala MEXA",
+    "id": 119
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "BANCO O1",
+    "id": 120
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "BANCO 06",
+    "id": 121
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "BANCO 16",
+    "id": 122
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "BANCO 13",
+    "id": 123
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "BANCO 12",
+    "id": 125
+  },
+  {
+    "tipo": "CO",
+    "minValue": 0,
+    "alarm2": 60,
+    "alarm1": 39,
+    "maxValue": 100,
+    "unidade": "PPM",
+    "detail": "SALA DE TRANSIENTE",
+    "id": 126
+  },
+  {
+    "tipo": "O2",
+    "minValue": 0,
+    "alarm2": 20,
+    "alarm1": 19.5,
+    "maxValue": 30,
+    "unidade": "Vol%",
+    "detail": "BANCO 12",
+    "id": 143
+  },
+  {
+    "tipo": "Lel",
+    "minValue": 0,
+    "alarm2": 40,
+    "alarm1": 25,
+    "maxValue": 100,
+    "unidade": "Lel%...",
+    "detail": "Sala Mexa",
+    "id": 133
+  },
+  {
+    "tipo": "Lel",
+    "minValue": 0,
+    "alarm2": 40,
+    "alarm1": 25,
+    "maxValue": 100,
+    "unidade": "Lel%",
+    "detail": "BANCO 16",
+    "id": 135
+  },
+  {
+    "tipo": "Lel",
+    "minValue": 0,
+    "alarm2": 40,
+    "alarm1": 25,
+    "maxValue": 100,
+    "unidade": "Lel%",
+    "detail": "BANCO 13",
+    "id": 136
+  },
+  {
+    "tipo": "Lel",
+    "minValue": 0,
+    "alarm2": 40,
+    "alarm1": 25,
+    "maxValue": 100,
+    "unidade": "Lel%",
+    "detail": "BANCO 01",
+    "id": 131
+  },
+  {
+    "tipo": "NO",
+    "minValue": 0,
+    "alarm2": 100,
+    "alarm1": 50,
+    "maxValue": 300,
+    "unidade": "PPM",
+    "detail": "BANCO 13",
+    "id": 141
+  },
+  {
+    "tipo": "NO",
+    "minValue": 0,
+    "alarm2": 100,
+    "alarm1": 50,
+    "maxValue": 300,
+    "unidade": "PPM",
+    "detail": "BANCO 16",
+    "id": 142
+  },
+  {
+    "tipo": "NO",
+    "minValue": 0,
+    "alarm2": 100,
+    "alarm1": 50,
+    "maxValue": 300,
+    "unidade": "PPM",
+    "detail": "BANCO 16",
+    "id": 128
+  },
+  {
+    "tipo": "NO",
+    "minValue": 0,
+    "alarm2": 100,
+    "alarm1": 50,
+    "maxValue": 300,
+    "unidade": "PPM",
+    "detail": "Sala DE TRANSIENTE",
+    "id": 140
+  },
+  {
+    "tipo": "NO",
+    "minValue": 0,
+    "alarm2": 100,
+    "alarm1": 50,
+    "maxValue": 300,
+    "unidade": "PPM",
+    "detail": "BANCO 01",
+    "id": 127
+  }
+]
